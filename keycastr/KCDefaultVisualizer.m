@@ -218,7 +218,7 @@
 		_currentBezelView = [[KCDefaultVisualizerBezelView alloc]
 			initWithMaxWidth:maxWidth
 			text:charString
-			backgroundColor:[userDefaults colorForKey:@"default.bezelColor"]
+			backgroundColor:[NSColor colorWithDeviceRed:0.27 green:0.274 blue:0.279 alpha:1.0]
 			];
 		frame.size.height += 10 + _currentBezelView.frame.size.height;
 		[_currentBezelView setAutoresizingMask:NSViewMinYMargin];
@@ -368,7 +368,7 @@
 
 @implementation KCDefaultVisualizerBezelView
 
-static const int kKCBezelBorder = 6;
+static const int kKCBezelBorder = 4;
 
 -(id) initWithMaxWidth:(CGFloat)maxWidth text:(NSString *)string backgroundColor:(NSColor *)color
 {
@@ -428,9 +428,9 @@ static const int kKCBezelBorder = 6;
 -(NSDictionary*) attributes
 {
 	NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-	NSColor* c = [ud colorForKey:@"default.textColor"];
+	NSColor* c = NSColor.whiteColor;
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSFont systemFontOfSize:[ud floatForKey:@"default.fontSize"]], NSFontAttributeName,
+            [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium], NSFontAttributeName,
 		[c colorWithAlphaComponent:_opacity * [c alphaComponent]], NSForegroundColorAttributeName,
 		nil];
 }
@@ -439,8 +439,8 @@ static const int kKCBezelBorder = 6;
 {
 	NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
 	[shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:_opacity]];
-	[shadow setShadowBlurRadius:2];
-	[shadow setShadowOffset:NSMakeSize(0,-1)];
+	[shadow setShadowBlurRadius:0];
+	[shadow setShadowOffset:NSMakeSize(0,0)];
 	return shadow;
 }
 
@@ -455,12 +455,12 @@ static const int kKCBezelBorder = 6;
 	NSRect frame = [self bounds];
 
 	NSBezierPath *bgPath = [NSBezierPath bezierPath];
-	[bgPath appendRoundedRect:frame radius:16];
+	[bgPath appendRoundedRect:frame radius:4];
 
 	[[_backgroundColor colorWithAlphaComponent:_opacity * [_backgroundColor alphaComponent]] setFill];
 	[bgPath fill];
 
-	[[self shadow] set];
+	/* [[self shadow] set]; */
 	[_layoutManager drawGlyphsForGlyphRange:NSMakeRange(0,[_textStorage length]) atPoint:NSMakePoint(kKCBezelBorder, kKCBezelBorder)];
 }
 
