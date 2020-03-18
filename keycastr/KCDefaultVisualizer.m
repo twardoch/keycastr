@@ -368,7 +368,7 @@
 
 @implementation KCDefaultVisualizerBezelView
 
-static const int kKCBezelBorder = 4;
+static const int kKCBezelBorder = 6;
 
 -(id) initWithMaxWidth:(CGFloat)maxWidth text:(NSString *)string backgroundColor:(NSColor *)color
 {
