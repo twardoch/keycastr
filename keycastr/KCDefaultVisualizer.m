@@ -222,7 +222,7 @@
 			];
 		frame.size.height += 10 + _currentBezelView.frame.size.height;
 		[_currentBezelView setAutoresizingMask:NSViewMinYMargin];
-		
+        
 		[self setFrame:frame display:YES animate:NO];
 
 		[[self contentView] addSubview:_currentBezelView];
@@ -469,12 +469,15 @@ static const int kKCBezelBorder = 6;
 	NSRect frame = [self frame];
 	[_layoutManager glyphRangeForTextContainer:_textContainer];
 	NSSize size = [_layoutManager usedRectForTextContainer:_textContainer].size;
+    NSRect screenFrame = [NSScreen mainScreen].frame;
+
 	size.width += kKCBezelBorder * 2;
 	size.height += kKCBezelBorder * 2;
 	if (frame.size.width != size.width || frame.size.height != size.height)
 	{
-		[self setFrameSize:size];
-		if (size.height != frame.size.height)
+        CGFloat startX = (NSWidth(screenFrame) - size.width) / 2;
+        [self setFrame:NSMakeRect(startX, frame.origin.y, size.width, size.height)];
+        		if (size.height != frame.size.height)
 		{
 			float deltaY = size.height - frame.size.height;
 			NSWindow* w = [self window];
@@ -492,6 +495,7 @@ static const int kKCBezelBorder = 6;
 			NSRect r = [w frame];
 			r.size.height += deltaY;
 			[self setAutoresizingMask:NSViewMaxYMargin];
+            
 			[w setFrame:r display:YES];
 			[self setAutoresizingMask:NSViewMinYMargin];
 		}
