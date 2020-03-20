@@ -72,10 +72,15 @@ static NSString* kLeftTabString = @"\xe2\x87\xa4";
 	if (d == nil)
 	{
 		d = [[NSDictionary alloc] initWithObjectsAndKeys:
-			UTF8("\xe2\x87\xa1"), NSNum(126), // up
-			UTF8("\xe2\x87\xa3"), NSNum(125), // down
-			UTF8("\xe2\x87\xa2"), NSNum(124), // right
-			UTF8("\xe2\x87\xa0"), NSNum(123), // left
+
+            UTF8("↑"), NSNum(126), // up
+            UTF8("↓"), NSNum(125), // down
+            UTF8("→"), NSNum(124), // right
+            UTF8("←"), NSNum(123), // left
+            //UTF8("\xe2\x87\xa1"), NSNum(126), // up
+			//UTF8("\xe2\x87\xa3"), NSNum(125), // down
+			//UTF8("\xe2\x87\xa2"), NSNum(124), // right
+			//UTF8("\xe2\x87\xa0"), NSNum(123), // left
 			UTF8("\xe2\x87\xa5"), NSNum(48), // tab
 			UTF8("\xe2\x8e\x8b"), NSNum(53), // escape
 			UTF8("\xe2\x8e\x8b"), NSNum(71), // escape
@@ -111,7 +116,7 @@ static NSString* kLeftTabString = @"\xe2\x87\xa4";
 			UTF8("\xe2\x90\xa3\xe2\x80\x8b"), NSNum(49), // space
 			nil];
 	}
-	return d;
+    return d;
 }
 
 -(id) transformedValue:(id)value
@@ -138,7 +143,7 @@ static NSString* kLeftTabString = @"\xe2\x87\xa4";
 	}
 	if (_modifiers & NSShiftKeyMask)
 	{
-		isShifted = YES;
+        isShifted = YES;
 		if (isCommand)
 			[mutableResponse appendString:kShiftKeyString];
 		else
@@ -155,24 +160,25 @@ static NSString* kLeftTabString = @"\xe2\x87\xa4";
 		[mutableResponse appendString:kCommandKeyString];
 	}
 
-	if (isShifted && !isCommand)
-	{
-        NSString *tmp = [@(_keyCode) isEqualToNumber:@48] ? kLeftTabString : keystroke.charactersIgnoringModifiers;
-		if (tmp) {
-			[mutableResponse appendString:tmp];
-			return mutableResponse;
-		}
-	}
-
 	id tmp = [[self _specialKeys] objectForKey:@(_keyCode)];
-	if (tmp != nil)
+    if (tmp != nil)
 	{
-		if (needsShiftGlyph)
+        if (needsShiftGlyph) {
 			[mutableResponse appendString:kShiftKeyString];
+        }
 		[mutableResponse appendString:tmp];
 
 		return mutableResponse;
 	}
+
+    if (isShifted && !isCommand)
+    {
+        NSString *tmp = [@(_keyCode) isEqualToNumber:@48] ? kLeftTabString : keystroke.charactersIgnoringModifiers;
+        if (tmp) {
+            [mutableResponse appendString:tmp];
+            return mutableResponse;
+        }
+    }
 
 	[mutableResponse appendString:keystroke.charactersIgnoringModifiers];
 

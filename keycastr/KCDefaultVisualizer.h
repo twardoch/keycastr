@@ -55,6 +55,7 @@
 -(NSShadow*) shadow;
 -(void) setAlphaValue:(float)opacity;
 -(void) appendString:(NSString*)t;
+-(void) extendExistence;
 -(void) scheduleFadeOut;
 
 @end
@@ -75,6 +76,7 @@
 	KCDefaultVisualizerBezelView* _currentBezelView;
 	NSMutableArray* _runningAnimations;
 	BOOL _dragging;
+    NSMutableString* oldCharString;
 }
 
 - (void)abandonCurrentBezelView;
